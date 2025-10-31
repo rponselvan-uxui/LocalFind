@@ -1,16 +1,38 @@
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/AuthContext';
 
 const CustomerLoginPage: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { user, login } = useAuth();
   
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login and redirect
-    navigate('/dashboard/customer');
+    setError(''); // Clear previous errors
+
+    // Basic Validation
+    if (!email || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+    
+    // In a real app, you'd check the response from your API.
+    // Here, we'll just mock a successful login.
+    try {
+      login(email, 'Customer');
+      // No need to navigate, the ProtectedRoute will handle it.
+    } catch (err) {
+      setError('Invalid email or password.'); // Mock error
+    }
   };
+
+  // If user is already logged in, redirect them from the login page
+  if (user) {
+    return <Navigate to="/dashboard/customer" replace />;
+  }
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
@@ -26,12 +48,23 @@ const CustomerLoginPage: React.FC = () => {
           <p className="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal pt-2">Log in to find the best local shops near you.</p>
         </div>
         <form onSubmit={handleLogin} className="flex w-full flex-col gap-4">
+          {error && (
+            <div className="w-full rounded-lg bg-red-100 p-3 text-center text-sm text-red-700 dark:bg-red-900 dark:text-red-200">
+              {error}
+            </div>
+          )}
           <div className="flex w-full flex-col">
             <label className="flex flex-col flex-1">
               <p className="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal pb-2">Email</p>
               <div className="relative flex w-full flex-1 items-center">
                 <span className="material-symbols-outlined text-slate-400 absolute left-4">mail</span>
-                <input className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#2A3B4D] h-14 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 pl-12 text-base font-normal leading-normal" placeholder="Enter your email" type="email" />
+                <input 
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#2A3B4D] h-14 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 pl-12 text-base font-normal leading-normal" 
+                  placeholder="Enter your email" 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
             </label>
           </div>
@@ -40,7 +73,13 @@ const CustomerLoginPage: React.FC = () => {
               <p className="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal pb-2">Password</p>
               <div className="relative flex w-full flex-1 items-center">
                 <span className="material-symbols-outlined text-slate-400 absolute left-4">lock</span>
-                <input className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#2A3B4D] h-14 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 px-12 text-base font-normal leading-normal" placeholder="Enter your password" type={passwordVisible ? 'text' : 'password'} />
+                <input 
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#2A3B4D] h-14 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 px-12 text-base font-normal leading-normal" 
+                  placeholder="Enter your password" 
+                  type={passwordVisible ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <button type="button" onClick={() => setPasswordVisible(!passwordVisible)} className="absolute right-4 text-slate-400 hover:text-primary dark:hover:text-primary">
                   <span className="material-symbols-outlined">{passwordVisible ? 'visibility_off' : 'visibility'}</span>
                 </button>
