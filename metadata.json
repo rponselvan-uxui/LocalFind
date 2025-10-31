@@ -1,0 +1,5 @@
+{
+  "name": "LocalFind",
+  "description": "A web application to discover and shop from the best local stores in your neighborhood. It provides separate dashboards for customers and shop owners, as well as an admin login.",
+  "requestFramePermissions": []
+}
