@@ -1,8 +1,8 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
+
+// We do NOT need to import tailwindcss or autoprefixer here
 
 export default defineConfig({
   server: {
@@ -17,15 +17,8 @@ export default defineConfig({
   },
   
   // --- THIS IS THE FIX ---
-  // We explicitly tell Vite to use Tailwind and Autoprefixer
-  css: {
-    postcss: {
-      plugins: [
-        tailwindcss,
-        autoprefixer,
-      ],
-    },
-  },
+  // The 'css' block has been completely removed.
+  // Vite and Tailwind v4 will now configure PostCSS automatically.
   // --- END FIX ---
 
   plugins: [react()],
