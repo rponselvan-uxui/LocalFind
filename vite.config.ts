@@ -1,29 +1,37 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
-export default defineConfig(({ mode }) => {
-    // We still load the env variables, but ONLY for Vite's server-side processes.
-    // DO NOT pass them to the client-side 'define' block.
-    const env = loadEnv(mode, '.', ''); 
-    
-    return {
-      server: {
-        port: 3000,
-        host: '0.0.0.0',
-        // You would add a proxy here to talk to your new backend
-        // proxy: {
-        //   '/api': 'http://localhost:8000' // Example: Your backend running on port 8000
-        // }
+export default defineConfig({
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
       },
-      plugins: [react()],
-      //
-      // The 'define' block exposing process.env.GEMINI_API_KEY has been REMOVED.
-      //
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
-      }
-    };
+    },
+  },
+  
+  // --- THIS IS THE FIX ---
+  // We explicitly tell Vite to use Tailwind and Autoprefixer
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss,
+        autoprefixer,
+      ],
+    },
+  },
+  // --- END FIX ---
+
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, '.'),
+    },
+  },
 });

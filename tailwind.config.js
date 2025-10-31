@@ -1,5 +1,7 @@
+import forms from '@tailwindcss/forms'; // Use import
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default { // Use export default
   content: [
     "./index.html",
     "./index.css",
@@ -34,6 +36,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    forms, // Use the imported plugin
   ],
 }

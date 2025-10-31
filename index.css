@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* This is the new v4 syntax. It replaces @tailwind */
+@theme base;
+@theme components;
+@theme utilities;
 
 /* Your global styles from index.html go here */
 body {
