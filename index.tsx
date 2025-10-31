@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { AuthProvider } from './hooks/AuthContext'; // Import the provider
+import './index.css';
+// This path is now corrected:
+import { AuthProvider } from './components/hooks/AuthContext'; 
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

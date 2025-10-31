@@ -1,8 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './hooks/AuthContext';
+// These paths are now corrected:
+import { useAuth } from './components/hooks/AuthContext';
+import { ROUTES } from './pages/constants/routes';
+// This path was correct:
 import LoadingSpinner from './components/LoadingSpinner';
-import { ROUTES } from './constants/routes'; // Import our constants
 
 // Import pages lazily
 const LandingPage = lazy(() => import('./pages/LandingPage'));

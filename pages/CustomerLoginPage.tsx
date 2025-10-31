@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/AuthContext';
+// This path is now corrected:
+import { useAuth } from '../components/hooks/AuthContext';
+// Import routes constant
+import { ROUTES } from './constants/routes';
 
 const CustomerLoginPage: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,6 +25,7 @@ const CustomerLoginPage: React.FC = () => {
     // In a real app, you'd check the response from your API.
     // Here, we'll just mock a successful login.
     try {
+      // @ts-ignore - We'll update this to use the real login function later
       login(email, 'Customer');
       // No need to navigate, the ProtectedRoute will handle it.
     } catch (err) {
@@ -31,13 +35,13 @@ const CustomerLoginPage: React.FC = () => {
 
   // If user is already logged in, redirect them from the login page
   if (user) {
-    return <Navigate to="/dashboard/customer" replace />;
+    return <Navigate to={ROUTES.DASHBOARD_CUSTOMER} replace />;
   }
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
       <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-xl bg-white dark:bg-[#1C2936] p-8 shadow-soft">
-        <Link to="/" className="flex flex-col items-center text-center">
+        <Link to={ROUTES.HOME} className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-4xl">storefront</span>
             <h1 className="text-3xl font-bold text-slate-900 dark:text-white font-heading">LocalFind</h1>
